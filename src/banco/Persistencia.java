@@ -1,23 +1,25 @@
 package banco;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 
 public class Persistencia {
 	
-	private static Connection conn;
-	
 	//Manipulações do cliente
-	private static void inserirCliente(Connection conexao) throws SQLException {
+	public static void inserirCliente(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "insert into cliente values (default,?,?)";
 		PreparedStatement pstmt = conexao.prepareStatement(sql);
 		
-		//pstmt.setString(1, "");
-		//pstmt.setString(2, "");
+		pstmt.setString(1, "Ruben");
+		pstmt.setString(2, "123.456.789-00");
 		
 		pstmt.execute();
 		conexao.commit();
@@ -25,13 +27,13 @@ public class Persistencia {
 		System.out.println("Cliente inserido!");
 	}
 	
-	private static void alterarCliente(Connection conexao) throws SQLException {
+	public static void alterarCliente(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "update cliente set nome = ? where cpf = ?";
 		PreparedStatement pstmt = conexao.prepareStatement(sql);
 		
-//		pstmt.setString(1, "Maria Ana dos Anjos");
-//		pstmt.setString(2, "111.111.111-11");
+		pstmt.setString(1, "Ruben Barbosa");
+		pstmt.setString(2, "123.456.789-00");
 		
 		pstmt.execute();
 		conexao.commit();
@@ -39,13 +41,13 @@ public class Persistencia {
 		System.out.println("Cliente alterado!");
 	}
 
-	private static void deletarCliente(Connection conexao) throws SQLException {
+	public static void deletarCliente(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "delete from cliente where nome = ? and cpf = ?";
 		PreparedStatement pstmt = conexao.prepareStatement(sql);
 		
-//		pstmt.setString(1, "Maria Ana dos Anjos");
-//		pstmt.setString(2, "111.111.111-11");
+		pstmt.setString(1, "Ruben Barbosa");
+		pstmt.setString(2, "123.456.789-00");
 		
 		pstmt.execute();
 		conexao.commit();
@@ -53,7 +55,7 @@ public class Persistencia {
 		System.out.println("Cliente excluido!");
 	}
 	
-	private static void consultarCliente(Connection conexao) throws SQLException {
+	public static void consultarCliente(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		Statement stmt = conexao.createStatement();
 		String sql = "select * from cliente";
@@ -68,14 +70,14 @@ public class Persistencia {
 	}
 
 	//Manipulações da conta
-	private static void inserirConta(Connection conexao) throws SQLException {
+	public static void inserirConta(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "insert into conta values (default,?,?,?)";
 		PreparedStatement pstmt = conexao.prepareStatement(sql);
 		
-		//pstmt.setString(1, "");
-		//pstmt.setString(2, "");
-		//pstmt.setString(3, "");
+		pstmt.setFloat(1, 0.f);				//saldo
+		pstmt.setInt(2, 2);					//idcliente
+		pstmt.setString(3, "1234-5");		//numeroconta
 		
 		pstmt.execute();
 		conexao.commit();
@@ -83,7 +85,7 @@ public class Persistencia {
 		System.out.println("Conta cadastrada!");
 	}
 	
-	private static void alterarConta(Connection conexao) throws SQLException {
+	public static void alterarConta(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "update conta set saldo = ? where idconta = ?";
 		PreparedStatement pstmt = conexao.prepareStatement(sql);
@@ -97,7 +99,7 @@ public class Persistencia {
 		System.out.println("Conta alterada!");
 	}
 	
-	private static void deletarConta(Connection conexao) throws SQLException {
+	public static void deletarConta(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "delete from conta where numeroconta = ? and idconta = ?";
 		PreparedStatement pstmt = conexao.prepareStatement(sql);
@@ -111,14 +113,14 @@ public class Persistencia {
 		System.out.println("Conta excluida!");
 	}
 	
-	private static void consultarConta(Connection conexao) throws SQLException {
+	public static void consultarConta(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		Statement stmt = conexao.createStatement();
 		String sql = "select * from conta";
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		while (rs.next()) {
-			System.out.println("Id: " + rs.getInt("idconta") + " " + rs.getInt("idcliente") + " " + rs.getString("numeroconta") + " " + rs.getFloat("saldo"));
+			System.out.println("Id: " + rs.getInt("idconta") + " Id Cliente: "  + rs.getInt("idcliente") + " Númedo da conta:  " + rs.getString("numeroconta") + " Saldo: " + rs.getFloat("saldo"));
 		}
 		
 		stmt.close();
@@ -126,14 +128,15 @@ public class Persistencia {
 	}
 	
 	//Manipulações do histórico
-	private static void inserirHistorico(Connection conexao) throws SQLException {
+	public static void inserirHistorico(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "insert into historico values (default,?,?,?,?)";
 		PreparedStatement pstmt = conexao.prepareStatement(sql);
 		
-		//pstmt.setString(1, "");
-		//pstmt.setString(2, "");
-		//pstmt.setString(3, "");
+		pstmt.setInt(1, 1);											//tipo_operacao
+		pstmt.setFloat(2, 400f);									//valor
+		pstmt.setDate(3, Date.valueOf(LocalDate.now()) );			//data
+		pstmt.setInt(4, 2);											//idconta
 		
 		pstmt.execute();
 		conexao.commit();
@@ -141,7 +144,7 @@ public class Persistencia {
 		System.out.println("Histórico cadastrado!");
 	}
 	
-	private static void alterarHistorico(Connection conexao) throws SQLException {
+	public static void alterarHistorico(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		String sql = "update historico set valor = ? where idhistorico = ?";
 		PreparedStatement pstmt = conexao.prepareStatement(sql);
@@ -155,9 +158,9 @@ public class Persistencia {
 		System.out.println("Histórico alterado!");
 	}
 	
-	private static void deletarHistorico(Connection conexao) throws SQLException {
+	public static void deletarHistorico(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
-		String sql = "delete from conta where idconta = ? and idhistorico = ?";
+		String sql = "delete from historico where idconta = ? and idhistorico = ?";
 		PreparedStatement pstmt = conexao.prepareStatement(sql);
 		
 //		pstmt.setString(1, "Maria Ana dos Anjos");
@@ -169,14 +172,14 @@ public class Persistencia {
 		System.out.println("Histórico excluido!");
 	}
 	
-	private static void consultarHistorico(Connection conexao) throws SQLException {
+	public static void consultarHistorico(Connection conexao) throws SQLException {
 		// TODO Auto-generated method stub
 		Statement stmt = conexao.createStatement();
-		String sql = "select * from conta";
+		String sql = "select * from historico";
 		ResultSet rs = stmt.executeQuery(sql);
 		
 		while (rs.next()) {
-			System.out.println("Id: " + rs.getInt("idhistorico") + " " + rs.getInt("tipo_operacao") + " " + rs.getFloat("valor") + " " + rs.getString("saldo") + " " + rs.getInt("idconta"));
+			System.out.println("Id: " + rs.getInt("idhistorico") + " " + rs.getInt("tipo_operacao") + " " + rs.getFloat("valor") + " " + rs.getDate("data_operacao") + " " + rs.getInt("idconta"));
 		}
 		
 		stmt.close();
