@@ -15,6 +15,7 @@ public class Conexao {
 		if (conexao == null) {
 			conexao = fazerConexao();
 		}
+		conexao.setAutoCommit(false);
 		return conexao;
 	}
 	
