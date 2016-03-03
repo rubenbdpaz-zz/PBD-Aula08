@@ -18,8 +18,8 @@ public class Persistencia {
 		String sql = "insert into cliente values (default,?,?)";
 		PreparedStatement pstmt = conexao.prepareStatement(sql);
 		
-		pstmt.setString(1, "Ruben");
-		pstmt.setString(2, "123.456.789-00");
+		pstmt.setString(1, "Ruben");			//Nome do cliente
+		pstmt.setString(2, "123.456.789-00");	//CPF
 		
 		pstmt.execute();
 		conexao.commit();
